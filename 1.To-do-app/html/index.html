@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do-app</title>
+</head>
+
+<style>
+    .task-container{
+        display: none;
+        gap: 5px;
+        grid-template-columns: 20% 60% 20%;
+        row-gap: 10px;
+        align-items: center;
+        
+        border: 1px solid rgb(73, 71, 71);
+        margin-top: 10px;
+        
+    }
+    .con{
+        text-align: center;
+        border-left: 1px solid red;
+
+
+    }
+    .container1{
+        text-align: center;
+        display: grid;
+        display: grid;
+        gap: 5px;
+        grid-template-columns: 200px auto;
+        
+    }
+    .con1{
+        
+        border-bottom: 1px solid rgb(73, 71, 71);
+    }
+  
+</style>
+<body>
+        <div>
+            <input id="user_name" type="text" placeholder="Enter User Name :">
+        </div>
+
+        <br>
+
+        <div>
+            <button onclick="add()">Add</button>
+        </div>
+        <br>
+        <div>
+            <textarea id="text_area" style="resize: none;" name="" id="" cols="30" rows="10"></textarea>
+        </div>
+
+        <h3 id="members">
+
+        </h3>
+
+        
+       
+        <div class="container1">
+            
+            <div class="con1" >
+                <h3 >User Name</h3>
+            </div>
+            <div class="con1" >
+                <h3 >Description</h3>
+            </div>
+        </div>
+
+
+        <div  id="tasksContainer">
+            
+           
+        </div>
+        
+
+
+        
+        
+        <script>
+            let user_arr = [];
+        
+            let btn=document.getElementById('members')
+            function add() {
+                let tasksContainer = document.getElementById('tasksContainer');
+                let user_name = document.getElementById("user_name").value;
+                let text_area = document.getElementById('text_area').value;
+                user_arr.push(user_name);
+                btn.innerHTML=user_arr
+                console.log(user_arr);
+        
+                if (user_name === '' || text_area === '') {
+                    alert("Both fields are required");
+                } else {
+                    // Get current date and time
+                    let current_date = new Date();
+                    let timestamp = current_date.getTime(); // Fetch timestamp
+                    let date_options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    let time_options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+        
+                    // Format date and time
+                    let formatted_date = current_date.toLocaleDateString('en-US', date_options);
+                    let formatted_time = current_date.toLocaleTimeString('en-US', time_options);
+                    // Create a new task container
+                    let task_container = document.createElement('div');
+                    task_container.className = 'task-container';
+                    task_container.style.display = "grid";
+        
+                    // Append user and description to the container
+                    task_container.innerHTML = `
+                        <div class="con">
+                            <h3>${user_name}</h3>
+                            <div class="">
+                                <br>${formatted_date} <br>${formatted_time}
+                            </div>
+                        </div>
+                        <div class="con">
+                            <p>${text_area}</p>
+                        </div>
+                        <div class="con">
+                            <button class="task-button">Edit</button>
+                            <button class="task-button">Completed</button>
+                            <button onclick="del(${timestamp})" class="task-button">Delete</button>
+                        </div>
+                    `;
+        
+                    tasksContainer.appendChild(task_container);
+        
+                    document.getElementById("user_name").value = '';
+                    document.getElementById("text_area").value = '';
+                }
+            }
+        
+            function del(timestamp) {
+                let u=String(prompt("Enter Your Name : "))
+                let index = user_arr.indexOf(u);
+
+                if (user_arr.includes(u)) {
+                    let string_date_time = new Date(timestamp).toLocaleString('en-US');
+            
+                    let confirm_delete = confirm("Task removed at Timestamp: " + string_date_time);
+                    if (confirm_delete) {
+                        event.target.closest('.task-container').remove();
+                        user_arr.splice(index,1);
+                        btn.innerHTML=user_arr
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                else{
+                    alert ("you are not Member of task")
+                    let become=confirm("Become memeber of existing tasks ?")    
+                    if (become){
+                        user_arr.push(u)
+                        btn.innerHTML=user_arr
+                        
+
+                    }
+                    
+                }
+                // Convert timestamp to string datetime
+            }
+        </script>
+        
+        
+       
+        
+        
+        
+        
+
+</body>
+</html>
+
